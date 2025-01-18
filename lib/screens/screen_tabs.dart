@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meals_app/models/meal.dart';
 import 'package:flutter_meals_app/screens/categories_screen.dart';
+import 'package:flutter_meals_app/screens/filters_screen.dart';
 import 'package:flutter_meals_app/screens/meals_screen.dart';
+import 'package:flutter_meals_app/widgets/layout/burger_menu/main_drawer.dart';
+
+enum Screens { meals, filters }
 
 class ScreenTabs extends StatefulWidget {
   const ScreenTabs({super.key});
@@ -31,6 +35,16 @@ class _ScreenTabsState extends State<ScreenTabs> {
     }
   }
 
+  void _selectScreen(Screens screenName) {
+    Navigator.pop(context);
+
+    if (screenName == Screens.filters) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx) {
+        return FiltersScreen();
+      }));
+    }
+  }
+
   void _onTabTap(int index) => setState(() => _selectedTabIndex = index);
 
   @override
@@ -57,6 +71,7 @@ class _ScreenTabsState extends State<ScreenTabs> {
       appBar: AppBar(
         title: Text(currentScreen.title),
       ),
+      drawer: MainDrawer(onSelectScreen: _selectScreen),
       body: Center(
         child: currentScreen.screen,
       ),
