@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meals_app/models/meal.dart';
 import 'package:flutter_meals_app/screens/categories_screen.dart';
 import 'package:flutter_meals_app/screens/meals_screen.dart';
 
@@ -11,17 +12,46 @@ class ScreenTabs extends StatefulWidget {
 
 class _ScreenTabsState extends State<ScreenTabs> {
   int _selectedTabIndex = 0;
+  final List<Meal> _favoriteMeals = [];
 
-  final List<({Widget screen, String title})> _screens = const [
-    (screen: CategoriesScreen(), title: 'Meals Categories'),
-    (screen: MealsScreen(meals: []), title: 'Favorites'),
-  ];
+  void showInfoMessage(String message) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  void _toggleFavorite(Meal meal) {
+    if (_favoriteMeals.contains(meal)) {
+      _favoriteMeals.remove(meal);
+      showInfoMessage('Removed from favorites!');
+    } else {
+      _favoriteMeals.add(meal);
+      showInfoMessage('Added to favorites!');
+    }
+  }
 
   void _onTabTap(int index) => setState(() => _selectedTabIndex = index);
 
   @override
   Widget build(BuildContext context) {
-    final currentScreen = _screens[_selectedTabIndex];
+    final List<({Widget screen, String title})> screens = [
+      (
+        screen: CategoriesScreen(
+          onToggleFavorite: _toggleFavorite,
+        ),
+        title: 'Meals Categories',
+      ),
+      (
+        screen: MealsScreen(
+          meals: _favoriteMeals,
+          onToggleFavorite: _toggleFavorite,
+        ),
+        title: 'Favorites',
+      ),
+    ];
+
+    final currentScreen = screens[_selectedTabIndex];
 
     return Scaffold(
       appBar: AppBar(
