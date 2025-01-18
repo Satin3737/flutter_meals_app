@@ -6,11 +6,11 @@ import 'package:flutter_meals_app/widgets/meals/meal_item.dart';
 class MealsScreen extends StatelessWidget {
   const MealsScreen({
     super.key,
-    required this.title,
+    this.title,
     required this.meals,
   });
 
-  final String title;
+  final String? title;
   final List<Meal> meals;
 
   void _onMealTap(BuildContext context, Meal meal) {
@@ -21,6 +21,7 @@ class MealsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isFavorites = title == null;
     final theme = Theme.of(context);
 
     Widget content = Center(
@@ -35,7 +36,9 @@ class MealsScreen extends StatelessWidget {
             ),
           ),
           Text(
-            'Try selecting another category!',
+            isFavorites
+                ? 'Add some meals to your favorites!'
+                : 'Try selecting another category!',
             style: theme.textTheme.bodyLarge?.copyWith(
               color: theme.colorScheme.onSurface,
             ),
@@ -55,14 +58,21 @@ class MealsScreen extends StatelessWidget {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Container(
+    if (isFavorites) {
+      return Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         child: content,
-      ),
-    );
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(title!),
+        ),
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+          child: content,
+        ),
+      );
+    }
   }
 }
