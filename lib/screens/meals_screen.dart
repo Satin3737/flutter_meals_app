@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meals_app/models/meal.dart';
-import 'package:flutter_meals_app/widgets/meal_item.dart';
+import 'package:flutter_meals_app/screens/meal_details_screen.dart';
+import 'package:flutter_meals_app/widgets/meals/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
   const MealsScreen({
@@ -12,8 +13,16 @@ class MealsScreen extends StatelessWidget {
   final String title;
   final List<Meal> meals;
 
+  void _onMealTap(BuildContext context, Meal meal) {
+    Navigator.push(context, MaterialPageRoute(builder: (ctx) {
+      return MealDetailsScreen(meal: meal);
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     Widget content = Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -21,24 +30,28 @@ class MealsScreen extends StatelessWidget {
         children: [
           Text(
             'Well... Nothing here!',
-            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
+            style: theme.textTheme.headlineLarge?.copyWith(
+              color: theme.colorScheme.onSurface,
+            ),
           ),
           Text(
             'Try selecting another category!',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: theme.colorScheme.onSurface,
+            ),
           ),
         ],
       ),
     );
 
     if (meals.isNotEmpty) {
-      content = ListView.builder(
+      content = ListView.separated(
         itemCount: meals.length,
-        itemBuilder: (ctx, index) => MealItem(meal: meals[index]),
+        itemBuilder: (ctx, index) => MealItem(
+          meal: meals[index],
+          onMealTap: () => _onMealTap(context, meals[index]),
+        ),
+        separatorBuilder: (ctx, index) => const SizedBox(height: 16),
       );
     }
 

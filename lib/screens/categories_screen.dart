@@ -3,7 +3,7 @@ import 'package:flutter_meals_app/data/categories_data.dart';
 import 'package:flutter_meals_app/data/meals_data.dart';
 import 'package:flutter_meals_app/models/category.dart';
 import 'package:flutter_meals_app/screens/meals_screen.dart';
-import 'package:flutter_meals_app/widgets/category_grid_item.dart';
+import 'package:flutter_meals_app/widgets/categories/category_grid_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
@@ -13,7 +13,7 @@ class CategoriesScreen extends StatelessWidget {
       return meal.categories.contains(category.id);
     }).toList();
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
+    Navigator.push(context, MaterialPageRoute(builder: (ctx) {
       return MealsScreen(
         title: category.title,
         meals: meals,

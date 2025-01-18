@@ -13,10 +13,12 @@ class CategoryGridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
       margin: const EdgeInsets.all(0),
       child: InkWell(
-        splashColor: Theme.of(context).colorScheme.onPrimary,
+        splashColor: theme.colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(16),
         onTap: onCategoryTap,
         child: Container(
@@ -34,9 +36,9 @@ class CategoryGridItem extends StatelessWidget {
           ),
           child: Text(
             category.title,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
+            style: theme.textTheme.titleLarge?.copyWith(
+              color: theme.colorScheme.onSurface,
+            ),
           ),
         ),
       ),
