@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meals_app/data/meals_data.dart';
 import 'package:flutter_meals_app/models/meal.dart';
 import 'package:flutter_meals_app/screens/categories_screen.dart';
 import 'package:flutter_meals_app/screens/filters_screen.dart';
@@ -6,6 +7,13 @@ import 'package:flutter_meals_app/screens/meals_screen.dart';
 import 'package:flutter_meals_app/widgets/layout/burger_menu/main_drawer.dart';
 
 enum Screens { meals, filters }
+
+const kDefaultFilters = {
+  Filter.glutenFree: false,
+  Filter.lactoseFree: false,
+  Filter.vegetarian: false,
+  Filter.vegan: false,
+};
 
 class ScreenTabs extends StatefulWidget {
   const ScreenTabs({super.key});
@@ -15,8 +23,9 @@ class ScreenTabs extends StatefulWidget {
 }
 
 class _ScreenTabsState extends State<ScreenTabs> {
-  int _selectedTabIndex = 0;
   final List<Meal> _favoriteMeals = [];
+  int _selectedTabIndex = 0;
+  Map<Filter, bool> _selectedFilters = kDefaultFilters;
 
   void showInfoMessage(String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -35,13 +44,16 @@ class _ScreenTabsState extends State<ScreenTabs> {
     }
   }
 
-  void _selectScreen(Screens screenName) {
+  void _selectScreen(Screens screenName) async {
     Navigator.pop(context);
 
     if (screenName == Screens.filters) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx) {
-        return FiltersScreen();
-      }));
+      final filters = await Navigator.push<Map<Filter, bool>>(
+        context,
+        MaterialPageRoute(
+            builder: (ctx) => FiltersScreen(selectedFilters: _selectedFilters)),
+      );
+      setState(() => _selectedFilters = filters ?? kDefaultFilters);
     }
   }
 
@@ -49,9 +61,26 @@ class _ScreenTabsState extends State<ScreenTabs> {
 
   @override
   Widget build(BuildContext context) {
+    final filteredMeals = dummyMeals.where((meal) {
+      if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
+        return false;
+      }
+      if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
+        return false;
+      }
+      if (_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian) {
+        return false;
+      }
+      if (_selectedFilters[Filter.vegan]! && !meal.isVegan) {
+        return false;
+      }
+      return true;
+    }).toList();
+
     final List<({Widget screen, String title})> screens = [
       (
         screen: CategoriesScreen(
+          filteredMeals: filteredMeals,
           onToggleFavorite: _toggleFavorite,
         ),
         title: 'Meals Categories',
