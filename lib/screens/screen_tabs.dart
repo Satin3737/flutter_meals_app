@@ -4,7 +4,7 @@ import 'package:flutter_meals_app/providers/filters_provider.dart';
 import 'package:flutter_meals_app/screens/categories_screen.dart';
 import 'package:flutter_meals_app/screens/filters_screen.dart';
 import 'package:flutter_meals_app/screens/meals_screen.dart';
-import 'package:flutter_meals_app/widgets/layout/burger_menu/main_drawer.dart';
+import 'package:flutter_meals_app/widgets/drawer/main_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum Screens { meals, filters }

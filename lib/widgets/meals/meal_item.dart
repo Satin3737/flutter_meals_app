@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meals_app/helpers/text_helper.dart';
 import 'package:flutter_meals_app/models/meal.dart';
+import 'package:flutter_meals_app/widgets/meals/meal_favorites_btn.dart';
 import 'package:flutter_meals_app/widgets/meals/meal_item_trait.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -38,6 +39,17 @@ class MealItem extends StatelessWidget {
                   fit: BoxFit.cover,
                   placeholder: MemoryImage(kTransparentImage),
                   image: NetworkImage(meal.imageUrl),
+                ),
+              ),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    shape: BoxShape.circle,
+                  ),
+                  child: MealFavoritesBtn(meal: meal),
                 ),
               ),
               Positioned(

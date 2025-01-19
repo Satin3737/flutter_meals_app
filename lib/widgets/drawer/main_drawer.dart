@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meals_app/screens/screen_tabs.dart';
-import 'package:flutter_meals_app/widgets/layout/burger_menu/menu_item.dart';
+import 'package:flutter_meals_app/widgets/drawer/menu_item.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key, required this.onSelectScreen});
