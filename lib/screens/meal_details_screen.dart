@@ -55,11 +55,14 @@ class MealDetailsScreen extends ConsumerWidget {
           children: [
             AspectRatio(
               aspectRatio: 21 / 9,
-              child: Image.network(
-                meal.imageUrl,
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: meal.id,
+                child: Image.network(
+                  meal.imageUrl,
+                  width: double.infinity,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             Container(
