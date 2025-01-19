@@ -2,15 +2,10 @@ import 'package:flutter_meals_app/data/meals_data.dart';
 import 'package:flutter_meals_app/providers/filters_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final mealsProvider = Provider((ref) {
-  return dummyMeals;
-});
-
 final filteredMealsProvider = Provider((ref) {
-  final meals = ref.watch(mealsProvider);
   final filters = ref.watch(filtersProvider);
 
-  return meals.where((meal) {
+  return dummyMeals.where((meal) {
     if (filters[Filters.glutenFree]! && !meal.isGlutenFree) {
       return false;
     }
