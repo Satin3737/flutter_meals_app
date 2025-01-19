@@ -33,13 +33,18 @@ class MealDetailsScreen extends ConsumerWidget {
         title: Text(meal.title),
         actions: [
           IconButton(
-            icon: AnimatedCrossFade(
+            icon: AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
-              firstChild: const Icon(Icons.star),
-              secondChild: const Icon(Icons.star_border),
-              crossFadeState: isFavorite
-                  ? CrossFadeState.showFirst
-                  : CrossFadeState.showSecond,
+              transitionBuilder: (child, animation) {
+                return ScaleTransition(
+                  scale: animation,
+                  child: child,
+                );
+              },
+              child: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                key: ValueKey(isFavorite),
+              ),
             ),
             onPressed: toggleFavorite,
           ),

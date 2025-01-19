@@ -68,7 +68,7 @@ class _ScreenTabsState extends ConsumerState<ScreenTabs> {
             label: 'Categories',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.star),
+            icon: Icon(Icons.favorite),
             label: 'Favorites',
           ),
         ],
