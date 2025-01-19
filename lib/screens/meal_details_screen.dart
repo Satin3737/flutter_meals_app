@@ -1,26 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meals_app/models/meal.dart';
+import 'package:flutter_meals_app/providers/favorites_provider.dart';
 import 'package:flutter_meals_app/widgets/meals/meal_properties_list.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MealDetailsScreen extends StatelessWidget {
+class MealDetailsScreen extends ConsumerWidget {
   const MealDetailsScreen({
     super.key,
     required this.meal,
-    required this.onToggleFavorite,
   });
 
   final Meal meal;
-  final void Function(Meal meal) onToggleFavorite;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    void showMessage(String message) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    }
+
+    final isFavorite = ref.watch(favoritesProvider).contains(meal);
+
+    void toggleFavorite() {
+      final isAdd = ref.read(favoritesProvider.notifier).toggleFavorite(meal);
+      showMessage(isAdd ? 'Added to favorites!' : 'Removed from favorites!');
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
         actions: [
           IconButton(
-            icon: const Icon(Icons.star),
-            onPressed: () => onToggleFavorite(meal),
+            icon: AnimatedCrossFade(
+              duration: const Duration(milliseconds: 300),
+              firstChild: const Icon(Icons.star),
+              secondChild: const Icon(Icons.star_border),
+              crossFadeState: isFavorite
+                  ? CrossFadeState.showFirst
+                  : CrossFadeState.showSecond,
+            ),
+            onPressed: toggleFavorite,
           ),
         ],
       ),
